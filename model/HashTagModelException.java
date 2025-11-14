@@ -26,4 +26,11 @@ public class HashTagModelException extends RuntimeException{
 		return new HashTagModelException(String.format("""
 			Column index (%d) out of bounds, [0-2]""", col));
 	}
+	
+	public static final
+	HashTagModelException blockedCellException(int lin, int col) {
+		
+		return new HashTagModelException(String.format("""
+				Cell (%d, %d) is already marked""", lin, col));
+	}
 }

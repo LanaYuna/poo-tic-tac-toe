@@ -6,6 +6,10 @@ public class HashTagModel {
 	
 	private Mark[][] table = new Mark[3][3];
 	
+	public HashTagModel(){
+		reset();
+	}
+	
 	public void reset() {
 		for(int lin=0; lin < table.length; lin++) {
 			for(int col=0; col < table[lin].length; col++) {
@@ -64,6 +68,42 @@ public class HashTagModel {
 		}
 		
 		return secondDiagonal;
+	}
+	
+	private boolean isInvalid(int index) {
+		return (index < 0 || index > 2);
+	}
+	
+	private void checkBounds(int lin, int col) {
+			if(isInvalid(lin) || isInvalid(col))
+				throw HashTagModelException.outOfBounds(lin, col);
+	}
+	
+	public boolean isBlank(int lin, int col) {
+		checkBounds(lin, col);
+		return( table[lin][col] == Mark.BLANK);
+	}
+	
+	public boolean hasBlank() {
+		
+		for(int lin=0; lin < 3; lin++) {
+			for(int col=0; col < 3; col++) {
+				if( isBlank(lin, col))
+					return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean isAllBlank() {
+		
+		for(int lin=0; lin < 3; lin++) {
+			for(int col=0; col < 3; col++) {
+				if( !isBlank(lin, col))
+					return false;
+			}
+		}
+		return true;
 	}
 	
 }
