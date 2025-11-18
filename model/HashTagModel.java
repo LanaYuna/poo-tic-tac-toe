@@ -106,4 +106,40 @@ public class HashTagModel {
 		return true;
 	}
 	
+	public boolean allEquals(Mark[] array ,Mark mark) {
+		return array[0] == mark && array[1] == mark && array[2] == mark;
+	}
+	
+	public boolean isWinner(Mark mark) {
+		
+		for(int i=0; i < 3; i++) {
+			if(allEquals(getMarksOfLine(i), mark))
+				return true;
+		}
+		
+		for(int i=0; i < 3; i++) {
+			if(allEquals(getMarksOfColumn(i), mark))
+				return true;
+		}
+		
+		if(allEquals(getMarksOfMainDiagonal(), mark))
+			return true;
+		
+		if(allEquals(getMarksOfSecondDiagonal(), mark))
+			return true;
+		
+		return false;
+	}
+	
+	public boolean isDraw() {
+		 if (isWinner(Mark.O)) 
+			 return false;
+		 if (isWinner(Mark.X)) 
+			 return false;
+		 if (hasBlank())    
+			 return false;
+
+		 return true;
+	}
+	
 }
