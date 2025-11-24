@@ -3,7 +3,7 @@ package ticTacToe.player;
 import ticTacToe.common.Mark;
 import ticTacToe.model.HashTagModel;
 
-public abstract class AbstractPlayer {
+public abstract class AbstractPlayer implements Player{
 	
 	protected
 	Mark myMark = null;

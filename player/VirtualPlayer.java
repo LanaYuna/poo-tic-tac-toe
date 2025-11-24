@@ -6,7 +6,7 @@ import ticTacToe.util.Delay;
 
 public class VirtualPlayer extends AbstractPlayer {
 
-	protected VirtualPlayer(HashTagModel hashTag) {
+	public VirtualPlayer(HashTagModel hashTag) {
 		super(hashTag);
 	}
 

@@ -28,6 +28,10 @@ public class HashTagView {
 		Console.println();
 	}
 	
+	public String printGameOver() {
+		return "Game over";
+	}
+	
 	static final 
 	String hashFormat = """
 		     |     |    
