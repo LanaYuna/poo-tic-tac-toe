@@ -6,6 +6,9 @@ import ticTacToe.model.HashTagModel;
 public abstract class AbstractPlayer implements Player{
 	
 	protected
+	String name = "";
+	
+	protected
 	Mark myMark = null;
 	
 	protected
@@ -27,6 +30,14 @@ public abstract class AbstractPlayer implements Player{
 	public final
 	Mark getMark() {
 		return myMark;
+	}
+	
+	public final void setName(String name) {
+		this.name = name;
+	}
+	
+	public final String getName() {
+		return this.name;
 	}
 	
 	public abstract void play();

@@ -12,7 +12,7 @@ public class UserPlayer extends AbstractPlayer {
 
 	@Override
 	public void play() {
-		Console.println("Sua vez");
+		Console.printf("\nSua vez '%s\n'", myMark);
 		int lin = Console.readInt("Linha:");
 		int col = Console.readInt("Coluna:");
 		

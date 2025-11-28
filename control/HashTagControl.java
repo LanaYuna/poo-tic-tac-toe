@@ -4,21 +4,30 @@ import java.util.Optional;
 
 import ticTacToe.common.Mark;
 import ticTacToe.model.HashTagModel;
+import ticTacToe.model.HashTagModelException;
+import ticTacToe.model.ScoreModel;
 import ticTacToe.player.Player;
 import ticTacToe.view.HashTagView;
+import ticTacToe.view.ScoreView;
 
 public class HashTagControl {
 	
+	// DEPENDÊNCIAS
 	private HashTagModel model;
 	private HashTagView view;
+	private ScoreModel scoreModel;
+	private ScoreView scoreView;
 	
 	private Player playerA;
 	private Player playerB;
 	private Player startPlayer;
 	
-	public HashTagControl(HashTagModel model, HashTagView view) {
+	public HashTagControl(HashTagModel model, HashTagView view, ScoreModel scoreModel, ScoreView scoreView) {
 		this.model = model;
 		this.view = view;
+		
+		this.scoreModel = scoreModel;
+		this.scoreView = scoreView;
 	}
 	
 	private Optional<Player> winner = Optional.empty();
@@ -36,7 +45,8 @@ public class HashTagControl {
 		Player currentPlayer = startPlayer;
 		
 		while(model.hasBlank()) {
-			currentPlayer.play();
+			
+			doPlay(currentPlayer);
 			view.print();
 			
 			checkForWinner();
@@ -48,6 +58,19 @@ public class HashTagControl {
 			
 		}
 		gameOver();
+	}
+	
+	private void doPlay(Player player) {
+		
+		while(true) {
+			try {
+				player.play();
+				return;
+			}
+			catch(HashTagModelException e) {
+				view.printError(e.getMessage());
+			}
+		}
 	}
 	
 	private Player getPlayer(Mark mark){
@@ -151,6 +174,9 @@ public class HashTagControl {
 	}
 	
 	private void gameOver() {
-		view.printGameOver();
+		Mark winnerMark = winner.isPresent()? winner.get().getMark() : Mark.BLANK;
+		view.printGameOver(winnerMark);
+		scoreModel.incScore(winnerMark);
+		scoreView.printScore();
 	}
 }

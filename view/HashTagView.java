@@ -9,6 +9,9 @@ public class HashTagView {
 	private final 
 	HashTagModel model;
 	
+	static final
+	String alertFormat = "\nERRI - %s\nPreste mais atenção!\n";
+	
 	public HashTagView(HashTagModel model) {
 		this.model = model;
 	}
@@ -28,9 +31,17 @@ public class HashTagView {
 		Console.println();
 	}
 	
-	public String printGameOver() {
-		return "Game over";
+	public void printError(String message) {
+		Console.printf(alertFormat, message);
 	}
+	
+	public void printGameOver(Mark winner) {
+		Console.println();
+		if(winner != Mark.BLANK) 
+			Console.printf("'%s' Venceu.", winner);
+		else 
+			Console.println("DEU VÉIA");
+	} 
 	
 	static final 
 	String hashFormat = """

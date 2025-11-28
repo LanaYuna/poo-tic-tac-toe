@@ -16,11 +16,38 @@ public class Console {
 		return value;
 	}
 	
+	static public
+	int readInt(String message, int min, int max) {
+		
+		final String msgFormat = "\n%s [%d-%d]";
+		int value = Integer.MIN_VALUE;
+		
+		while(value < min || value > max) {
+			
+			value = readInt(String.format(msgFormat, message, min, max));
+		}
+		return value;
+	}
+	
 	static public  
 	float readfloat(String message) {
 		System.out.print(message + " ");
 		float value = scanner.nextFloat();
 		scanner.nextLine();
+		return value;
+	}
+	
+	static public
+	char readChar(String message, char...acceptedValues) {
+		
+		String strAccepted = new String(acceptedValues);
+		final String format = "\n%s";
+		char value;
+		do {
+			out.printf(format, message);
+			value = scanner.nextLine().charAt(0);
+		} while(strAccepted.indexOf(value) < 0);
+		
 		return value;
 	}
 	

@@ -10,4 +10,7 @@ public interface Player {
 	
 	public Mark getMark();
 	
+	public void setName(String name);
+	public String getName();
+	
 }
