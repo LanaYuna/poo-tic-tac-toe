@@ -34,4 +34,13 @@ public class ScoreModel {
 	public int hashTagTimes() {
 		return this.hashTagTimes;
 	}
+	
+	public int scoreOf(Mark mark) {
+		return switch(mark) {
+			case O -> this.scoreO;
+			case X -> this.scoreX;
+			case BLANK -> this.hashTagTimes;
+		};
+	}
+	
 }

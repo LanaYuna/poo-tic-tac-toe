@@ -2,6 +2,7 @@ package ticTacToe;
 
 import ticTacToe.common.Mark;
 import ticTacToe.control.HashTagControl;
+import ticTacToe.model.BestPlayersModel;
 import ticTacToe.model.HashTagModel;
 import ticTacToe.model.ScoreModel;
 import ticTacToe.player.Player;
@@ -9,10 +10,11 @@ import ticTacToe.player.UserPlayer;
 import ticTacToe.player.VirtualPlayer;
 import ticTacToe.util.Console;
 import ticTacToe.view.AppView;
+import ticTacToe.view.BestPlayersView;
 import ticTacToe.view.HashTagView;
 import ticTacToe.view.ScoreView;
 
-public class AppTicTacToe {
+public class AppTicTacToe { 
 	
 	public static enum GameType {HUMAN_HUMAN, HUMAN_COMPUTER};
 	
@@ -26,6 +28,12 @@ public class AppTicTacToe {
 	private ScoreView scoreView;
 	
 	private Player[] vPlayer = new Player[2];
+	
+	private static final
+	String HISTORY_FILENAME = "TicTacToeHistory.obj";
+	
+	private BestPlayersModel bestPlayersModel;
+	private BestPlayersView bestPlayersView;
 	
 	private AppTicTacToe() {
 		createGame();
@@ -42,6 +50,48 @@ public class AppTicTacToe {
 		hashTagControl = new HashTagControl(hashTagModel, hashTagView,
 											scoreModel, scoreView);
 		
+		readOrCreateHistory();
+	}
+	
+	private void readOrCreateHistory() {
+		
+		try {
+			bestPlayersModel = BestPlayersModel.readFromFile(HISTORY_FILENAME);
+		}
+		catch(Exception e) {
+			bestPlayersModel = new BestPlayersModel(10);
+		}
+		finally {
+			bestPlayersView = new BestPlayersView(bestPlayersModel);
+		}
+	}
+	
+	private void updateHistory() {
+		
+		Player playerA = vPlayer[0];
+		Player playerB = vPlayer[1];
+		
+		int scoreA = scoreModel.scoreOf(playerA.getMark());
+		int scoreB = scoreModel.scoreOf(playerB.getMark());
+		int scoreDraw = scoreModel.scoreOf(Mark.BLANK);
+		
+		if(scoreA >= scoreB) 
+			bestPlayersModel.addBestPlayer(playerA.getName(),
+											scoreA, scoreB, scoreDraw);
+		
+		if(scoreB >= scoreA)
+			bestPlayersModel.addBestPlayer(playerB.getName(),
+											scoreB, scoreA, scoreDraw);
+	}
+	
+	private void writeHistory() {
+		
+		try {
+			bestPlayersModel.writeToFile(HISTORY_FILENAME);
+		}
+		catch(Exception e) {
+			hashTagView.printError(e.getMessage());
+		}
 	}
 	
 	private void createPlayers(GameType gameType) {
@@ -79,7 +129,11 @@ public class AppTicTacToe {
 			hashTagControl.go();
 		} while(appView.askForNewGame());
 		
+		updateHistory();
+		bestPlayersView.print();
 		appView.showGoodbyeMessage();
+		Console.readLine("ENTER");
+		writeHistory();
 	}
 
 	public static void main(String[] args) {
